@@ -43,13 +43,14 @@ def send_message(message):
     box.click()
     box.fill(message)
     box.press("Enter")
-    while PAGE.query_selector(".result-streaming") is not None:
+    time.sleep(1)
+    while PAGE.query_selector('.self-end.visible') is None:
         time.sleep(0.1)
 
 def get_last_message():
     """Get the latest message"""
-    page_elements = PAGE.query_selector_all(".flex.flex-col.items-center > div")
-    last_element = page_elements[-2]
+    page_elements = PAGE.query_selector_all('[data-message-author-role="assistant"]')
+    last_element = page_elements[len(page_elements) - 1]
     return last_element.inner_text()
 
 @APP.route("/chat", methods=["GET"])
